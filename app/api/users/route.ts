@@ -20,3 +20,9 @@ export async function POST(req: NextRequest) {
     
     return NextResponse.json(user)
 }
+
+export async function DELETE(req: NextRequest) {
+    const { id } = await req.json()
+    const user = await prisma.user.delete({ where: { id } })
+    return NextResponse.json(user)
+}

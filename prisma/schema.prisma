@@ -23,10 +23,11 @@ model Basket {
 }
 
 model Product {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  name     String
-  price    Float
-  image    String
-  Basket   Basket? @relation(fields: [basketId], references: [id])
-  basketId String? @db.ObjectId
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  price       Float
+  description String
+  image       String
+  Basket      Basket? @relation(fields: [basketId], references: [id])
+  basketId    String? @db.ObjectId
 }

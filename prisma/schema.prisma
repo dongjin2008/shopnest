@@ -18,8 +18,17 @@ model User {
 
 model Basket {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  userId   String
-  products Product[]
+  userId   String 
+  products OrderedProduct[]
+}
+
+model OrderedProduct {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  productId String @unique
+  quantity  Int @default(1)
+  basket    Basket? @relation(fields: [basketId], references: [id])
+  basketId  String @db.ObjectId
+
 }
 
 model Product {
@@ -28,6 +37,4 @@ model Product {
   price       Float
   description String
   image       String
-  Basket      Basket? @relation(fields: [basketId], references: [id])
-  basketId    String? @db.ObjectId
 }

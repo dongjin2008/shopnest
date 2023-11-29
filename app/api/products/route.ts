@@ -35,8 +35,11 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json(product)
 }
 
+// delete by id
 export async function DELETE(req: NextRequest) {
     const { id } = await req.json()
-    const product = await prisma.product.delete({ where: { id } })
+    const product = await prisma.product.delete({
+        where: { id }
+    })
     return NextResponse.json(product)
 }

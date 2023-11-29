@@ -12,26 +12,32 @@ const basketSchema = z.object({
   products: z.array(productSchema)
 })
 
-export async function GET() {
-  const baskets = await prisma.basket.findMany();
+export async function GET(req: NextRequest) {
+  const baskets = await prisma.basket.findMany()
   return NextResponse.json(baskets)
 }
+
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     const basketData = basketSchema.parse(body)
-    let basket = await prisma.basket.findUnique({
+    console.log(basketData.userId)
+    const basket = await prisma.basket.findFirst({
       where: { 
-        id: basketData.userId,
+        userId: basketData.userId,
       },
     });
+    let basketId = basket?.id
+
+
     if (!basket) {
-      basket = await prisma.basket.create({
+      const new_basket = await prisma.basket.create({
         data: {
           userId: basketData.userId,
         }
       });
+      basketId = new_basket.id
     }
 
     const existingOrderedProduct = await prisma.orderedProduct.findUnique({
@@ -56,8 +62,10 @@ export async function POST(req: NextRequest) {
           productId: basketData.products[0].productId,
           quantity: basketData.products[0].quantity,
           basket: {
-            connect: { id: basket.id }
-          },
+            connect: {
+              id: basketId,
+            }
+          }
         },
       })
       return NextResponse.json(orderedProduct)
@@ -67,17 +75,8 @@ export async function POST(req: NextRequest) {
   }
 
 }
-export async function PUT(req: NextRequest) {
-  const { id, userId, products } = await req.json()
-  const basket = await prisma.basket.update({
-    where: { id },
-    data: { userId, products }
-  })
-  return NextResponse.json(basket)
-}
 
-export async function DELETE(req: NextRequest) {
-  const { id } = await req.json()
-  const basket = await prisma.basket.delete({ where: { id } })
-  return NextResponse.json(basket)
+export async function DELETE() {
+  const baskets = await prisma.basket.deleteMany()
+  return NextResponse.json(baskets)
 }

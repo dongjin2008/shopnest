@@ -22,7 +22,6 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     const basketData = basketSchema.parse(body)
-    console.log(basketData.userId)
     const basket = await prisma.basket.findFirst({
       where: { 
         userId: basketData.userId,

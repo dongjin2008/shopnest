@@ -1,22 +1,23 @@
 "use client";
-import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import React from 'react'
 import NavBar from './components/NavBar'
 import Card from './components/Card'
 import axios from 'axios'
-import { z } from 'zod';
+import LogIn from './components/LogIn';
+import useStore from './store/store';
 
 interface ProductSchema {
   id: string
   name: string
   description: string
   price: number
-  thumbnail: string
+  image: string
 }
 
 export default function Home() {
   const [products, setProducts] = useState([])
+  const { login, setLogin } = useStore() as { login: boolean, setLogin: (login: boolean) => void }
   useEffect(() => {
     const getproducts = async () => {
       try {
@@ -32,11 +33,12 @@ export default function Home() {
   return (
     <>
       <NavBar />
+      { login && <LogIn />}
       <main className='w-screen h-screen bg-primary px-[3.75rem]  mt-[7.5rem]'>
         <div className='flex justify-center'>
           <div className='grid grid-rows-4 grid-cols-3 gap-[3.75rem]'>
             {products.map((product: ProductSchema) => (
-              <Card key={product.id} ProductId={product.id} ProductName={product.name} Description={product.description} Price={product.price} Thumbnail={product.thumbnail} />
+              <Card key={product.id} ProductId={product.id} ProductName={product.name} Description={product.description} Price={product.price} Thumbnail={product.image} />
             ))}
           </div>
         </div>

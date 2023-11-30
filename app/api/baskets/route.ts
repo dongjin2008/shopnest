@@ -13,8 +13,12 @@ const basketSchema = z.object({
 })
 
 export async function GET(req: NextRequest) {
-  const baskets = await prisma.basket.findMany()
-  return NextResponse.json(baskets)
+  try {
+    const baskets = await prisma.basket.findMany()
+    return NextResponse.json(baskets)
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 })
+  }
 }
 
 
@@ -76,6 +80,10 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE() {
-  const baskets = await prisma.basket.deleteMany()
-  return NextResponse.json(baskets)
+  try {
+    const baskets = await prisma.basket.deleteMany()
+    return NextResponse.json(baskets)
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 })
+  }
 }

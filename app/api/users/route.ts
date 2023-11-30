@@ -9,20 +9,33 @@ const createUserSchema = z.object({
 
 
 export async function GET() {
-    const users = await prisma.user.findMany();
-    return NextResponse.json(users)
+    try {
+
+        const users = await prisma.user.findMany();
+        return NextResponse.json(users)
+    } catch (error: any) {
+        return NextResponse.json({ error: error.message }, { status: 400 })
+    }
 }
 
 export async function POST(req: NextRequest) {
-    const body = await req.json()
-    const userData = createUserSchema.parse(body)
-    const user = await prisma.user.create({ data: userData })
-    
-    return NextResponse.json(user)
+    try {
+        const body = await req.json()
+        const userData = createUserSchema.parse(body)
+        const user = await prisma.user.create({ data: userData })
+        
+        return NextResponse.json(user)
+    } catch (error: any) {
+        return NextResponse.json({ error: error.message }, { status: 400 })
+    }
 }
 
 export async function DELETE(req: NextRequest) {
-    const { id } = await req.json()
-    const user = await prisma.user.delete({ where: { id } })
-    return NextResponse.json(user)
+    try {
+        const { id } = await req.json()
+        const user = await prisma.user.delete({ where: { id } })
+        return NextResponse.json(user)
+    } catch (error: any) {
+        return NextResponse.json({ error: error.message }, { status: 400 })
+    }
 }

@@ -1,27 +1,43 @@
+"use client";
 import Image from 'next/image'
+import { useState, useEffect } from 'react'
 import React from 'react'
 import NavBar from './components/NavBar'
 import Card from './components/Card'
+import axios from 'axios'
+import { z } from 'zod';
+
+interface ProductSchema {
+  id: string
+  name: string
+  description: string
+  price: number
+  thumbnail: string
+}
 
 export default function Home() {
+  const [products, setProducts] = useState([])
+  useEffect(() => {
+    const getproducts = async () => {
+      try {
+        const response = await axios.get('/api/products')
+        setProducts(response.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getproducts()
+  }, [])
+  
   return (
     <>
       <NavBar />
       <main className='w-screen h-screen bg-primary px-[3.75rem]  mt-[7.5rem]'>
         <div className='flex justify-center'>
           <div className='grid grid-rows-4 grid-cols-3 gap-[3.75rem]'>
-            <Card ProductName='Keyboard' Description='This is a sentence about something important' Price={50} Thumbnail='https://images.unsplash.com/photo-1595044426077-d36d9236d54a?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGtleWJvYXJkfGVufDB8MHwwfHx8MA%3D%3D'/>
-            <Card ProductName='Keyboard' Description='This is a sentence about something important' Price={50} Thumbnail='https://images.unsplash.com/photo-1595044426077-d36d9236d54a?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGtleWJvYXJkfGVufDB8MHwwfHx8MA%3D%3D'/>
-            <Card ProductName='Keyboard' Description='This is a sentence about something important' Price={50} Thumbnail='https://images.unsplash.com/photo-1595044426077-d36d9236d54a?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGtleWJvYXJkfGVufDB8MHwwfHx8MA%3D%3D'/>
-            <Card ProductName='Keyboard' Description='This is a sentence about something important' Price={50} Thumbnail='https://images.unsplash.com/photo-1595044426077-d36d9236d54a?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGtleWJvYXJkfGVufDB8MHwwfHx8MA%3D%3D'/>
-            <Card ProductName='Keyboard' Description='This is a sentence about something important' Price={50} Thumbnail='https://images.unsplash.com/photo-1595044426077-d36d9236d54a?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGtleWJvYXJkfGVufDB8MHwwfHx8MA%3D%3D'/>
-            <Card ProductName='Keyboard' Description='This is a sentence about something important' Price={50} Thumbnail='https://images.unsplash.com/photo-1595044426077-d36d9236d54a?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGtleWJvYXJkfGVufDB8MHwwfHx8MA%3D%3D'/>
-            <Card ProductName='Keyboard' Description='This is a sentence about something important' Price={50} Thumbnail='https://images.unsplash.com/photo-1595044426077-d36d9236d54a?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGtleWJvYXJkfGVufDB8MHwwfHx8MA%3D%3D'/>
-            <Card ProductName='Keyboard' Description='This is a sentence about something important' Price={50} Thumbnail='https://images.unsplash.com/photo-1595044426077-d36d9236d54a?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGtleWJvYXJkfGVufDB8MHwwfHx8MA%3D%3D'/>
-            <Card ProductName='Keyboard' Description='This is a sentence about something important' Price={50} Thumbnail='https://images.unsplash.com/photo-1595044426077-d36d9236d54a?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGtleWJvYXJkfGVufDB8MHwwfHx8MA%3D%3D'/>
-            <Card ProductName='Keyboard' Description='This is a sentence about something important' Price={50} Thumbnail='https://images.unsplash.com/photo-1595044426077-d36d9236d54a?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGtleWJvYXJkfGVufDB8MHwwfHx8MA%3D%3D'/>
-            <Card ProductName='Keyboard' Description='This is a sentence about something important' Price={50} Thumbnail='https://images.unsplash.com/photo-1595044426077-d36d9236d54a?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGtleWJvYXJkfGVufDB8MHwwfHx8MA%3D%3D'/>
-            <Card ProductName='Keyboard' Description='This is a sentence about something important' Price={50} Thumbnail='https://images.unsplash.com/photo-1595044426077-d36d9236d54a?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGtleWJvYXJkfGVufDB8MHwwfHx8MA%3D%3D'/>
+            {products.map((product: ProductSchema) => (
+              <Card key={product.id} ProductId={product.id} ProductName={product.name} Description={product.description} Price={product.price} Thumbnail={product.thumbnail} />
+            ))}
           </div>
         </div>
       </main>

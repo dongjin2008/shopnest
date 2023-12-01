@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import prisma from '../../../lib/prisma'
+import getPrismaClient from '../../../lib/prisma'
 import { z } from 'zod'
+
+const prisma = getPrismaClient()
 
 const createUserSchema = z.object({
     username: z.string(),

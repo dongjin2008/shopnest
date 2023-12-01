@@ -28,6 +28,11 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     const basketData = basketSchema.parse(body)
+    const product_data = await prisma.product.findFirst({
+      where: {
+        id: basketData.products[0].productId,
+      },
+    });
     const basket = await prisma.basket.findFirst({
       where: { 
         userId: basketData.userId,
@@ -64,6 +69,10 @@ export async function POST(req: NextRequest) {
     } else {
       const orderedProduct = await prisma.orderedProduct.create({
         data: {
+          name: product_data?.name || '',
+          price: product_data?.price || 0,
+          description: product_data?.description || '', 
+          image: product_data?.image || '',
           productId: basketData.products[0].productId,
           quantity: basketData.products[0].quantity,
           basket: {

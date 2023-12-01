@@ -4,10 +4,11 @@ import Image from 'next/image'
 import Close from '../assets/Close.svg'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
+import { Dialog } from '@headlessui/react'
 import { useUserStore } from '../store/store';
 
 const LogIn = () => {
-  const { name, password, isLogin, setLogin, setName, setPassword, setIsLogin } = useUserStore() 
+  const { name, password, login, isLogin, setLogin, setName, setPassword, setIsLogin } = useUserStore() 
   const cookie = new Cookies()
   const handleClick = async (name: string, password: string) => {
     try {
@@ -26,7 +27,7 @@ const LogIn = () => {
   }
   
   return (
-    <main className='absolute shadow top-1/2 left-1/2 mr-[-50%] translate-x-[-50%] translate-y-[-50%]  bg-primary h-[35rem] w-[40rem] mx-auto'>
+    <Dialog open={login} onClose={() => setLogin(false)} className='absolute shadow top-1/2 left-1/2 mr-[-50%] translate-x-[-50%] translate-y-[-50%]  bg-primary h-[35rem] w-[40rem] mx-auto z-10'>
       <button className='fixed top-1 right-1' onClick={() => {setLogin(false)}}>
         <Image className='w-[2rem] h-[2rem]' src={Close} alt='close'></Image>
       </button>
@@ -57,7 +58,7 @@ const LogIn = () => {
         </div>
       )}
 
-    </main>
+    </Dialog>
   )
 }
 

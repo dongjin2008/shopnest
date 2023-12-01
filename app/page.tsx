@@ -5,7 +5,8 @@ import NavBar from './components/NavBar'
 import Card from './components/Card'
 import axios from 'axios'
 import LogIn from './components/LogIn';
-import { useUserStore } from './store/store';
+import Basket from './components/Basket';
+import { useUserStore, useBasketStore } from './store/store';
 import { toast } from 'sonner'
 
 interface ProductSchema {
@@ -19,7 +20,6 @@ interface ProductSchema {
 export default function Home() {
   const [products, setProducts] = useState([])
   const { login } = useUserStore()
-  const { added, setAdded } = useUserStore()
   
 
 
@@ -34,12 +34,12 @@ export default function Home() {
     }
     getproducts()
   }, [])
-  
+
   return (
     <>
       <NavBar />
-      { login && <LogIn />}
-      { added && toast.success('Added to cart') && setAdded(false) }
+      <LogIn />
+      <Basket />
       <main className='w-screen h-screen bg-primary px-[3.75rem]  mt-[7.5rem]'>
         <div className='flex justify-center'>
           <div className='grid grid-rows-4 grid-cols-3 gap-[3.75rem]'>

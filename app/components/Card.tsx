@@ -3,7 +3,8 @@ import Image from 'next/image'
 import Plus from '../assets/Plus.svg'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
-import { useUserStore } from '../store/store'
+import { useBasketStore, useUserStore } from '../store/store'
+import { toast } from 'sonner'
 
 
 type CardProps = {
@@ -15,8 +16,8 @@ type CardProps = {
 }
 
 const Card: React.FC<CardProps> = ({ ProductId, ProductName, Description, Price, Thumbnail }) => {
-  const { setAdded } = useUserStore()
   const cookie = new Cookies()
+  const { setAdded } = useBasketStore()
   const handleClick = async () => {
     try {
       await axios.post("/api/baskets", {
@@ -28,10 +29,11 @@ const Card: React.FC<CardProps> = ({ ProductId, ProductName, Description, Price,
           }
         ]
       })
+      toast.success('Added to cart')
+      setAdded(true)
     } catch (error: any) {
       console.log(error)
     }
-    setAdded(true)
   }
 
   return (

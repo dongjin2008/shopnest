@@ -6,6 +6,7 @@ import Image from 'next/image'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
 import { useState, useEffect } from 'react'
+import { Princess_Sofia } from 'next/font/google'
 
 interface BasketProps {
   id: string
@@ -41,6 +42,16 @@ const Basket = () => {
       console.log(error)
     }
   }
+  const changeHandler = async (productId: string, quantity: number) => {
+    try {
+      await axios.put(`/api/baskets/${productId}`, {
+        quantity: quantity
+      })
+      getOrderedProducts()
+    } catch (error: any) {
+      console.log(error)
+    }
+  }
   return (
     <Dialog open={basket} onClose={() => setBasket(false)} className="absolute top-0 right-0 w-[35rem] h-full bg-primary shadow z-10">
         <button className='fixed top-1 right-1' onClick={() => {setBasket(false)}}>
@@ -50,14 +61,14 @@ const Basket = () => {
           <h1 className='text-4xl text-center text-accent font-extrabold'>Basket</h1>
           <div className='h-[25rem] overflow-x-hidden overflow-scroll flex flex-col gap-6 px-9'>
             {products.map((product: BasketProps) => (
-              <div className="w-full flex">
+              <div key={product.id} className="w-full flex">
                 <Image className='mr-10' width={200} height={30} src={product.image} alt='close'></Image>
-                <div className="w-full flex flex-col">
+                <div className="w-full flex gap-7 flex-col items-center">
                   <div className='w-full flex justify-between'>
                     <h1 className='text-2xl text-accent font-extrabold'>{product.name}</h1>
                     <h1 className='text-2xl text-accent font-extrabold'>{`$${product.price}`}</h1>
                   </div>
-                  <h1>{product.quantity}</h1>
+                  <input className='w-[10rem] bg-primary text-accent font-bold text-[1.25rem]' value={product.quantity} onChange={(e) => {changeHandler(product.id, parseInt(e.target.value))}} type="number" />
                 </div>
               </div>
             ))}

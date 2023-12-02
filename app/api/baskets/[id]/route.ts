@@ -4,7 +4,7 @@ import { z } from "zod";
 
 const prisma = getPrismaClient()
 
-export const bodySchema = z.object({
+const bodySchema = z.object({
   quantity: z.number(),
 })
 

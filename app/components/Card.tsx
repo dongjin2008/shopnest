@@ -17,8 +17,13 @@ type CardProps = {
 
 const Card: React.FC<CardProps> = ({ ProductId, ProductName, Description, Price, Thumbnail }) => {
   const cookie = new Cookies()
+  const { isLogin } = useUserStore()
   const { setAdded } = useBasketStore()
   const handleClick = async () => {
+    if (!isLogin) {
+      toast.error('Please login first')
+      return
+    } 
     try {
       await axios.post("/api/baskets", {
         userId: cookie.get('userId'),

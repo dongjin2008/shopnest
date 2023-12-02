@@ -8,6 +8,7 @@ import LogIn from './components/LogIn';
 import Basket from './components/Basket';
 import { useUserStore, useBasketStore } from './store/store';
 import { toast } from 'sonner'
+import Cookies from 'universal-cookie'
 
 interface ProductSchema {
   id: string
@@ -18,12 +19,16 @@ interface ProductSchema {
 }
 
 export default function Home() {
+  const cookie = new Cookies()
   const [products, setProducts] = useState([])
-  const { login } = useUserStore()
+  const { setIsLogin } = useUserStore()
   
 
 
   useEffect(() => {
+    if (cookie.get('userId')) {
+      setIsLogin(true)
+    }
     const getproducts = async () => {
       try {
         const response = await axios.get('/api/products')

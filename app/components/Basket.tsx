@@ -1,12 +1,12 @@
 import React from 'react'
 import { Dialog } from '@headlessui/react'
-import { useBasketStore } from '../store/store'
+import { useBasketStore, useUserStore } from '../store/store'
 import Close from '../assets/Close.svg'
 import Image from 'next/image'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
 import { useState, useEffect } from 'react'
-import { Princess_Sofia } from 'next/font/google'
+import { toast } from 'sonner'
 
 interface BasketProps {
   id: string
@@ -19,30 +19,37 @@ interface BasketProps {
 }
 
 const Basket = () => {
+  const { isLogin } = useUserStore()
   const { basket, added, setBasket, setAdded } = useBasketStore()
   const [products, setProducts] = useState([])
+  const [total, setTotal] = useState(0)
   const cookie = new Cookies()
   useEffect(() => {
     getOrderedProducts()
   }, [])
 
   useEffect(() => {
-    if (added) {
+    if (isLogin) {
       getOrderedProducts()
-      setAdded(false)
     }
-  }, [added])
+  }, [isLogin])
 
   const getOrderedProducts = async () => {
     try {
       const response = await axios.get(`/api/users/${cookie.get('userId')}`)
       const products_list = await axios.get(`/api/baskets/${response.data.id}`)
+      const total = await axios.get(`/api/total/${response.data.id}`)
+      setTotal(total.data)
       setProducts(products_list.data)
     } catch (error: any) {
       console.log(error)
     }
   }
   const changeHandler = async (productId: string, quantity: number) => {
+    if (quantity < 1) {
+      toast.error('Quantity must be greater than 0')
+      return
+    }
     try {
       await axios.put(`/api/baskets/${productId}`, {
         quantity: quantity
@@ -72,6 +79,10 @@ const Basket = () => {
                 </div>
               </div>
             ))}
+          </div>
+          <div className='flex justify-between px-9'>
+            <h1 className='text-accent text-3xl font-bold'>Total: ${total}</h1>
+            <button className='w-[8rem] h-[3rem] rounded-full text-center text-primary bg-accent text-2xl font-bold'>Pay Now</button>
           </div>
         </div>
 

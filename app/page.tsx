@@ -6,8 +6,7 @@ import Card from './components/Card'
 import axios from 'axios'
 import LogIn from './components/LogIn';
 import Basket from './components/Basket';
-import { useUserStore, useBasketStore } from './store/store';
-import { toast } from 'sonner'
+import { useUserStore } from './store/store';
 import Cookies from 'universal-cookie'
 
 interface ProductSchema {

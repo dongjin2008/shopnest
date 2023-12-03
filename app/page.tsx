@@ -15,6 +15,7 @@ interface ProductSchema {
   name: string
   description: string
   price: number
+  priceId: string
   image: string
 }
 
@@ -49,7 +50,7 @@ export default function Home() {
         <div className='flex justify-center'>
           <div className='grid grid-rows-4 grid-cols-3 gap-[3.75rem]'>
             {products.map((product: ProductSchema) => (
-              <Card key={product.id} ProductId={product.id} ProductName={product.name} Description={product.description} Price={product.price} Thumbnail={product.image} />
+              <Card key={product.id} ProductId={product.id} ProductName={product.name} Description={product.description} Price={product.price} PriceId={product.priceId} Thumbnail={product.image} />
             ))}
           </div>
         </div>

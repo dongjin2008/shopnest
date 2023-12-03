@@ -5,17 +5,28 @@ import axios from 'axios'
 import Cookies from 'universal-cookie'
 import { useBasketStore, useUserStore } from '../store/store'
 import { toast } from 'sonner'
-
+import { useShoppingCart } from 'use-shopping-cart'
 
 type CardProps = {
   ProductId: string
   ProductName: string
+  PriceId: string
   Description: string
   Price: number
   Thumbnail: string
 }
 
-const Card: React.FC<CardProps> = ({ ProductId, ProductName, Description, Price, Thumbnail }) => {
+const Card: React.FC<CardProps> = ({ ProductId, ProductName, Description, Price, PriceId, Thumbnail }) => {
+  const { addItem } = useShoppingCart()
+  const product = {
+    name: ProductName,
+    description: Description,
+    price: Price,
+    price_id: PriceId,
+    image: Thumbnail,
+    quantity: 1,
+    currency: 'USD'
+  }
   const cookie = new Cookies()
   const { isLogin } = useUserStore()
   const { setAdded } = useBasketStore()
@@ -24,6 +35,7 @@ const Card: React.FC<CardProps> = ({ ProductId, ProductName, Description, Price,
       toast.error('Please login first')
       return
     } 
+    addItem(product)
     try {
       await axios.post("/api/baskets", {
         userId: cookie.get('userId'),

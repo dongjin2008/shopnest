@@ -7,6 +7,7 @@ const prisma = getPrismaClient()
 const createProductSchema = z.object({
     name: z.string(),
     price: z.number(),
+    priceId: z.string(),
     description: z.string(),
     image: z.string().url(),
 })
@@ -26,22 +27,4 @@ export async function POST(req: NextRequest) {
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 400 })
   }
-}
-
-export async function PUT(req: NextRequest) {
-    const { id, name, price, description, image } = await req.json()
-    const product = await prisma.product.update({
-        where: { id },
-        data: { name, price, description, image }
-    })
-    return NextResponse.json(product)
-}
-
-// delete by id
-export async function DELETE(req: NextRequest) {
-    const { id } = await req.json()
-    const product = await prisma.product.delete({
-        where: { id }
-    })
-    return NextResponse.json(product)
 }

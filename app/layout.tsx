@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Toaster } from 'sonner'
 import './globals.css'
+import CartProvider from './components/Providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,16 +19,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children}
-        <Toaster
-          toastOptions={{
-            style: {
-              background: '#383A3E',
-              color: '#6CC3E4',
-              borderColor: '#6CC3E4',
-            },
-          }}
-        />
+        <CartProvider>
+          {children}
+          <Toaster
+            toastOptions={{
+              style: {
+                background: '#383A3E',
+                color: '#6CC3E4',
+                borderColor: '#6CC3E4',
+              },
+            }}
+          />
+        </CartProvider>
       </body>
     </html>
   )

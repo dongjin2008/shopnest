@@ -6,7 +6,7 @@ const prisma = getPrismaClient()
 
 export const GET = async (req: NextRequest) => {
   try {
-    const product_datas = [{id: string, name: string, price: number, image: string, description: string}]
+    const product_datas = [{id: string, name: string, price: number, priceId: string, image: string, description: string}]
     const id = req.url.split('products/')[1].split('/')[0]
     const basket = await prisma.basket.findFirst({
       where: {

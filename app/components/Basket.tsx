@@ -7,7 +7,6 @@ import Image from 'next/image'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
 import { useState, useEffect } from 'react'
-import { toast } from 'sonner'
 import { useShoppingCart } from 'use-shopping-cart'
 import { redirect } from 'next/dist/server/api-utils'
 
@@ -22,7 +21,7 @@ interface BasketProps {
 }
 
 const Basket = () => {
-  const { cartDetails, removeItem, totalPrice, redirectToCheckout } = useShoppingCart()
+  const { cartDetails, removeItem, totalPrice, redirectToCheckout, setItemQuantity } = useShoppingCart()
   const { basket, added, setBasket, setAdded } = useBasketStore()
   useEffect(() => {
   }, [])
@@ -61,7 +60,9 @@ const Basket = () => {
                     <h1 className='text-2xl text-accent font-extrabold'>{`$${entry.price}`}</h1>
                   </div>
                   <div className='flex w-full justify-between'>
-                    <input className='w-[6rem] bg-primary text-accent font-bold text-[1.25rem]' value={entry.quantity} type="number" />
+                    <input className='w-[6rem] bg-primary text-accent font-bold text-[1.25rem]' value={entry.quantity} onChange={(event) => {
+                      setItemQuantity(entry.id, parseInt(event.target.value))
+                    }} type="number" />
                     <button onClick={() => {handleClick(entry.id)}}>
                       <Image className='w-[1.5rem] h-[1.5rem]' src={Trash} alt='trash'></Image>
                     </button>

@@ -55,7 +55,9 @@ const Card: React.FC<CardProps> = ({ ProductId, ProductName, Description, Price,
 
   return (
     <div className='flex flex-col gap-[0.5rem] w-[19.5rem] h-[18.25rem]'>
-      <Image width={312} height={200} src={Thumbnail} alt="product Image"></Image>
+      <div className='w-full h-[10rem] overflow-hidden'>
+        <Image width={312} height={200} src={Thumbnail} alt="product Image"></Image>
+      </div>
       <div className='flex justify-between'>
         <h1 className='text-[1.5rem] text-accent font-extrabold'>{ProductName}</h1>
         <h1 className='text-[1.5rem] text-accent font-extrabold'>{`$${Price}`}</h1>

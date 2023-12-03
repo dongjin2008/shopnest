@@ -9,8 +9,8 @@ export default function CartProvider({children}: {children: ReactNode}) {
       mode="payment"
       cartMode="client-only"
       stripe={process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string}
-      successUrl="http://127.0.0.1:3000/sucess"
-      cancelUrl="http://127.0.0.1:3000/cancle"
+      successUrl="http://shopnest-ten.vercel.app/sucess"
+      cancelUrl="http://shopnest-ten.vercel.app/cancle"
       currency="USD"
       billingAddressCollection={true}
       shouldPersist={true}
